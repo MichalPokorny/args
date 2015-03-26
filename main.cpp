@@ -25,8 +25,6 @@ int main(int argc, char** argv) {
   args::Parse(&argc, &argv);
 
   if (Options.output_file.present()) {
-    string x = Options.output_file;
-    // TODO?
     cout << Options.output_file.get() << endl;
   }
 

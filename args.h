@@ -38,9 +38,23 @@ class Flag {
  public:
   virtual T get() = 0;
   virtual bool present() = 0;
-  operator T() {
-    return get();
-  }
+
+  // Our initial idea was to also include 'operator T()' what would call .get().
+  // Eventually, we decided against that, mostly because even with this
+  // operator, flags would not be fully usable as their underlying types.
+  // For example, this wouldn't work due to C++ type inference rules:
+  //     cout << my_string_flag << endl;
+  // We would need to write:
+  //     cout << my_string_flag.get() << endl;
+  // On the other hand, this would work:
+  //     string my_flag_value = my_string_flag;
+  //
+  // We decided to remove the 'operator T()' to make the API more consistent
+  // (always 'flag.get()'). Also, because 'get()' throws exceptions when
+  // accessing nonpresent flags, 'operator T()' could throw exceptions as well.
+  // 'string value = my_string_flag;', however, looks innocent.
+  // 'string value = my_string_flag.get();' makes the possibility of failure
+  // more explicit.
 
   void alias(const FlagName& name) {
   }
