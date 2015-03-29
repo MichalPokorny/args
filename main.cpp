@@ -9,6 +9,8 @@ using std::string;
 struct {
   args::String output_file;
   args::Enum mode;
+  args::Int print_lines;
+  args::Bool verbose;
 } Options;
 
 int main(int argc, char** argv) {
@@ -21,6 +23,11 @@ int main(int argc, char** argv) {
 
   args::AddEnum(&Options.mode, "mode", args::OPTIONAL,
                 {"hello", "world", "foobar"}, "An awesome flag.");
+
+  args::AddInt(&Options.print_lines, "print", args::OPTIONAL, 10, 50,
+		  "Some number flag.");
+
+  args::AddBool(&Options.verbose, 'v', args::OPTIONAL, "Is verbose mode on?");
 
   args::Parse(&argc, &argv);
 

@@ -113,6 +113,26 @@ class StringFlag : public Flag<std::string> {
 
 class EnumFlag : public StringFlag {};
 
+class IntFlag : public Flag<int> {
+ public:
+  int get() override {
+	return 0;
+  }
+  bool present() override {
+	return false;
+  }
+};
+
+class BoolFlag : public Flag<bool> {
+ public:
+  bool get() override {
+	return false;
+  }
+  bool present() override {
+	return false;
+  }
+};
+
 }  // namespace internal
 
 // In the context of the library, flags are represented as internal::Flag
@@ -121,6 +141,8 @@ class EnumFlag : public StringFlag {};
 // simpler (e.g. "args::String my_flag" instead of "args::StringFlag my_flag").
 typedef internal::StringFlag String;
 typedef internal::EnumFlag Enum;
+typedef internal::IntFlag Int;
+typedef internal::BoolFlag Bool;
 
 // struct {
 //   args::StringFlag my_string;
@@ -167,6 +189,15 @@ internal::EnumFlag& AddEnum(internal::EnumFlag*,
   return *(new internal::EnumFlag);
 }
 
-// TODO: boolean, int
+internal::IntFlag& AddInt(internal::IntFlag*, const internal::FlagName& name,
+							bool required, const std::string& documentation,
+							int lowerBound = INT_MIN,
+							int upperBound = INT_MAX) {
+}
+
+internal::BoolFlag& AddBool(internal::BoolFlag*,
+							const internal::FlagName& name,
+							const std::string& documentation) {
+}
 
 }  // namespace args
