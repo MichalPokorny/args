@@ -53,6 +53,11 @@ void Parse(int* argc, char*** argv) {
 bool TryParse(int argc, const char** argv) {
 }
 
+// This method returns vector of std::string representing standart comand-line
+// arguments(arguments that are not represented as args framework specifies or
+// are listed after "--" symbol).
+// 
+// If there are no such arguments returns empty vector
 const std::vector<std::string>& GetNonoption() {
   return *(new std::vector<std::string>);
 }
@@ -144,15 +149,17 @@ typedef internal::EnumFlag Enum;
 typedef internal::IntFlag Int;
 typedef internal::BoolFlag Bool;
 
-// struct {
-//   args::StringFlag my_string;
-// } Options;
-//
-// args::AddString(&Options.my_string, "output", args::REQUIRED, "this flag is useful");
-// Options.my_string.alias('o', "output_thing")
-// args::Alias(&Options.my_string, 'o', "output_thing");
+// Constants used to make code using args framework more clear.
 const bool REQUIRED = true;
 const bool OPTIONAL = false;
+
+// Method used for add new string flag.
+// first parameter	- args::String variable
+// name				- name of new flag
+// bool				- is flag required(true) or optional(false)
+// documentation	- string documentation of flag
+//
+// Returns new string flag
 internal::StringFlag& AddString(internal::StringFlag*,
                                 const internal::FlagName& name,
                                 bool required,
@@ -175,26 +182,61 @@ internal::StringFlag& Alias(internal::StringFlag*,
                                 names) {
 }
 
-internal::EnumFlag& AddEnum(internal::EnumFlag*,
-                            const internal::FlagName& name, bool required,
+// Method used for add new enum flag.
+// first parameter	- args::Enum variable
+// name				- name of new flag
+// bool				- is flag required(true) or optional(false)
+// documentation	- string documentation of flag
+// allowed_values	- enum of allowed values represented as std::stringes
+//
+// Returns new enum flag
+internal::EnumFlag& AddEnum(interunal::EnumFlag*,
+                            const internal::FlagName& name, bool required, 
+							const std::string& documentation,
                             const std::initializer_list<std::string>&
-                                allowed_values,
-		            const std::string& documentation) {
-  return *(new internal::EnumFlag);
-}
-internal::EnumFlag& AddEnum(internal::EnumFlag*,
-                            const internal::FlagName& name, bool required,
-                            std::initializer_list<const char*> allowed_values,
-		            const std::string& documentation) {
+                                allowed_values) {
   return *(new internal::EnumFlag);
 }
 
+// Method used for add new enum flag.
+// first parameter	- args::Enum variable
+// name				- name of new flag
+// bool				- is flag required(true) or optional(false)
+// documentation	- string documentation of flag
+// allowed_values	- enum of allowed values represented as const char*s
+//
+// Returns new enum flag
+internal::EnumFlag& AddEnum(internal::EnumFlag*,
+                            const internal::FlagName& name, bool required,
+							const std::string& documentation,
+                            std::initializer_list<const char*> allowed_values
+		            ) {
+  return *(new internal::EnumFlag);
+}
+
+// Method used for add new int flag.
+// first parameter	- args::String variable
+// name				- name of new flag
+// bool				- is flag required(true) or optional(false)
+// documentation	- string documentation of flag
+// lowerBound		- the lowest allowed value of flag
+// upperBound		- the highest allowed value of flag
+//
+// Returns new int flag
 internal::IntFlag& AddInt(internal::IntFlag*, const internal::FlagName& name,
 							bool required, const std::string& documentation,
 							int lowerBound = INT_MIN,
 							int upperBound = INT_MAX) {
 }
 
+// Method used for add new bool flag.
+// first parameter	- args::Bool variable
+// name				- name of new flag
+// documentation	- string documentation of flag
+//
+// Returns new bool flag
+//
+// Method does not have required parameter. It has no sense for bool flag.
 internal::BoolFlag& AddBool(internal::BoolFlag*,
 							const internal::FlagName& name,
 							const std::string& documentation) {
