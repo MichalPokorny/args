@@ -11,9 +11,16 @@
 // be impossible to pass a non-bool option without a value, this makes no
 // sense for non-bools. Thus we decided to skip this part of the assignment.
 //
-// TODO: But it might make sense to only allow "-x" for booleans, while
-// not allowing "-x false"/"-x=true". Perhaps we should add this as a special
-// mode for AddBool?
+// Use case:
+//     // Create variables to hold values of parsed flags.
+//     args::String output_file;
+//     args::Enum protocol;
+//     args::Int timeout_ms;
+//     args::Bool verbose;
+//     // Bind our variables to new flags.
+//     args::AddString(&output_file, "output", args::REQUIRED,
+//                     "Path to the output file.");
+//     args::AddEnum(&protocol, "protocol", )
 // TODO: is it a "flag", or an "option"? unify nomenclature
 
 #include <string>
@@ -71,6 +78,7 @@ struct FlagName {
   FlagName(const std::string& name) {}
   FlagName(const char* name) {}
   FlagName(char short_name) {}
+  FlagName(const std::initializer_list<FlagName>& names) {}
 };
 
 template<typename T>
@@ -153,7 +161,8 @@ typedef internal::BoolFlag Bool;
 const bool REQUIRED = true;
 const bool OPTIONAL = false;
 
-// Method used for add new string flag.
+// To create a new flag, call an Add* method like this:
+//    
 // first parameter	- args::String variable
 // name				- name of new flag
 // bool				- is flag required(true) or optional(false)
@@ -167,30 +176,7 @@ internal::StringFlag& AddString(internal::StringFlag*,
   return *(new internal::StringFlag);
 }
 
-// TODO: namapovat enum na C++ enum?
-
-// TODO: Alias should be either templated over Flag derived classes, or
-// copied for all flag types.
-// OR - we could also make it 'void Alias(Flag*, FlagName),', which would
-// limit the fluentness of the API. I think it would be a good idea.
-// Less complexity that way.
-internal::StringFlag& Alias(internal::StringFlag*,
-                            const internal::FlagName& name) {
-}
-internal::StringFlag& Alias(internal::StringFlag*,
-                            const std::initializer_list<internal::FlagName>&
-                                names) {
-}
-
-// Method used for add new enum flag.
-// first parameter	- args::Enum variable
-// name				- name of new flag
-// bool				- is flag required(true) or optional(false)
-// documentation	- string documentation of flag
-// allowed_values	- enum of allowed values represented as std::stringes
-//
-// Returns new enum flag
-internal::EnumFlag& AddEnum(interunal::EnumFlag*,
+internal::EnumFlag& AddEnum(internal::EnumFlag*,
                             const internal::FlagName& name, bool required, 
 							const std::string& documentation,
                             const std::initializer_list<std::string>&
@@ -198,14 +184,6 @@ internal::EnumFlag& AddEnum(interunal::EnumFlag*,
   return *(new internal::EnumFlag);
 }
 
-// Method used for add new enum flag.
-// first parameter	- args::Enum variable
-// name				- name of new flag
-// bool				- is flag required(true) or optional(false)
-// documentation	- string documentation of flag
-// allowed_values	- enum of allowed values represented as const char*s
-//
-// Returns new enum flag
 internal::EnumFlag& AddEnum(internal::EnumFlag*,
                             const internal::FlagName& name, bool required,
 							const std::string& documentation,
@@ -214,32 +192,22 @@ internal::EnumFlag& AddEnum(internal::EnumFlag*,
   return *(new internal::EnumFlag);
 }
 
-// Method used for add new int flag.
-// first parameter	- args::String variable
-// name				- name of new flag
-// bool				- is flag required(true) or optional(false)
-// documentation	- string documentation of flag
-// lowerBound		- the lowest allowed value of flag
-// upperBound		- the highest allowed value of flag
-//
-// Returns new int flag
 internal::IntFlag& AddInt(internal::IntFlag*, const internal::FlagName& name,
 							bool required, const std::string& documentation,
 							int lowerBound = INT_MIN,
 							int upperBound = INT_MAX) {
 }
 
-// Method used for add new bool flag.
-// first parameter	- args::Bool variable
-// name				- name of new flag
-// documentation	- string documentation of flag
-//
-// Returns new bool flag
-//
-// Method does not have required parameter. It has no sense for bool flag.
 internal::BoolFlag& AddBool(internal::BoolFlag*,
-							const internal::FlagName& name,
+							const internal::FlagName& name, bool required,
 							const std::string& documentation) {
+}
+
+void Alias(internal::StringFlag*, const internal::FlagName& name) {
+}
+
+void Alias(internal::StringFlag*,
+           const std::initializer_list<internal::FlagName>& names) {
 }
 
 }  // namespace args
