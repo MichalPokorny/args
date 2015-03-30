@@ -84,6 +84,12 @@ const std::vector<std::string>& GetNonoption() {
 // to be visible in the header due to C++ rules.
 namespace internal {
 
+// A universal set of names for a flag. A 'name' can be a one-char short name,
+// or a char* long description.
+// FlagNames can be constructed from a std::initializer_list
+// of short or long names to represent a flag with multiple names.
+// In this case, at least one name must be given. The first name will
+// be used as the "primary" name for purposes of building help in Usage().
 struct FlagName {
  public:
   FlagName(const std::string& name) {}
