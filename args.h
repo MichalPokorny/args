@@ -42,6 +42,7 @@
 // TODO: is it a "flag", or an "option"? unify nomenclature
 
 #include <climits>
+#include <exception>
 #include <string>
 #include <utility>
 #include <vector>
@@ -92,10 +93,23 @@ struct FlagName {
   FlagName(const std::initializer_list<FlagName>& names) {}
 };
 
+// Thrown if the user attempts to access flags before they are parsed
+// by Parse or TryParse.
+class CommandLineNotParsed : public std::exception {};
+// Thrown if the user tries to read the value of an optional flag
+// that wasn't passed on the command line.
+class FlagNotPassed : public std::exception {};
+
+// Subclasses of Flag<T> represent flags of various types.
 template<typename T>
 class Flag {
  public:
+  // Returns the value given to this flag, if the flag was specified.
+  // If the flag wasn't specified, throws FlagNotPassed.
+  // Throws CommandLineNotParser if Parse or TryParse wasn't called yet.
   virtual T get() = 0;
+  // Returns whether this flag was given a value on the command-line.
+  // Throws CommandLineNotParser if Parse or TryParse wasn't called yet.
   virtual bool present() = 0;
 };
 
