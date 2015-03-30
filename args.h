@@ -60,6 +60,8 @@ namespace args {
 // to make the most common use case simpler (most programs don't need anything
 // but the default behavior).
 void Parse(int* argc, char*** argv) {
+  (void) argc;
+  (void) argv;
 }
 
 // Prints out help about all registered flags to standard output.
@@ -71,11 +73,15 @@ void ShowUsage() {
 // If parsing wasn't successful, argc and argv are untouched.
 // NOTE: TryParse doesn't respond to "--help" and "-h".
 bool TryParse(int* argc, const char*** argv) {
+  (void) argc;
+  (void) argv;
+  return false;
 }
 
 // Returns the help string used by ShowUsage.
 // Useful for handling TryParse errors.
 std::string GetUsage() {
+  return "";
 }
 
 // This method returns vector of std::string representing standard command-line
@@ -97,10 +103,15 @@ namespace internal {
 // be used as the "primary" name for purposes of building help in Usage().
 struct FlagName {
  public:
-  FlagName(const std::string& name) {}
-  FlagName(const char* name) {}
-  FlagName(char short_name) {}
-  FlagName(const std::initializer_list<FlagName>& names) {}
+  FlagName(const char* long_name) {
+    (void) long_name;
+  }
+  FlagName(char short_name) {
+    (void) short_name;
+  }
+  FlagName(const std::initializer_list<FlagName>& names) {
+    (void) names;
+  }
 };
 
 template<typename T>
@@ -154,37 +165,50 @@ typedef internal::IntFlag Int;
 typedef internal::BoolFlag Bool;
 
 // Constants used to make code using args framework more clear.
+// This may be possibly changed to an enum if there is need for more
+// "flag types" than REQUIRED and OPTIONAL.
 const bool REQUIRED = true;
 const bool OPTIONAL = false;
 
 // AddString, AddEnum, AddInt, AddBool create new flags.
 // See top of this file for examples.
-internal::StringFlag& AddString(internal::StringFlag*,
-                                const internal::FlagName& name,
-                                bool required,
-                                const std::string& documentation) {
-  return *(new internal::StringFlag);
+void AddString(internal::StringFlag* flag, const internal::FlagName& name,
+               bool required, const std::string& documentation) {
+  (void) flag;
+  (void) name;
+  (void) required;
+  (void) documentation;
 }
 
-internal::EnumFlag& AddEnum(internal::EnumFlag*,
-                            const internal::FlagName& name, bool required,
-                            const std::string& documentation,
-                            std::initializer_list<const char*> allowed_values) {
-  return *(new internal::EnumFlag);
+void AddEnum(internal::EnumFlag* flag, const internal::FlagName& name,
+             bool required, const std::string& documentation,
+             std::initializer_list<const char*> allowed_values) {
+  (void) flag;
+  (void) name;
+  (void) required;
+  (void) documentation;
+  (void) allowed_values;
 }
 
 // The 'minimum' and 'maximum' parameters can be used to set the allowed range.
 // The bounds are inclusive (minimum = 1, maximum = 3 allows {1, 2, 3}).
-internal::IntFlag& AddInt(internal::IntFlag*, const internal::FlagName& name,
-                          bool required, const std::string& documentation,
-                          int minimum = INT_MIN, int maximum = INT_MAX) {
-  return *(new internal::IntFlag);
+void AddInt(internal::IntFlag* flag, const internal::FlagName& name,
+            bool required, const std::string& documentation,
+            int minimum = INT_MIN, int maximum = INT_MAX) {
+  (void) flag;
+  (void) name;
+  (void) required;
+  (void) documentation;
+  (void) minimum;
+  (void) maximum;
 }
 
-internal::BoolFlag& AddBool(internal::BoolFlag*,
-                            const internal::FlagName& name, bool required,
-                            const std::string& documentation) {
-  return *(new internal::BoolFlag);
+void AddBool(internal::BoolFlag* flag, const internal::FlagName& name,
+             bool required, const std::string& documentation) {
+  (void) flag;
+  (void) name;
+  (void) required;
+  (void) documentation;
 }
 
 // -- NOTES --
@@ -207,5 +231,8 @@ internal::BoolFlag& AddBool(internal::BoolFlag*,
 //
 // Short boolean flags can be "squashed" -- the command line "ls -laHrt" is
 // equivalent to "ls -l -a -H -r -t".
+//
+// The '(void) something;' construct used in empty functions is used to
+// squash "unused argument" warnings.
 
 }  // namespace args

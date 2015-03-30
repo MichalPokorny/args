@@ -14,6 +14,8 @@ struct {
 } Options;
 
 int main(int argc, char** argv) {
+  (void) argc;
+  (void) argv;
   args::AddString(&Options.output_file, {"output", 'o', "output_file"}, true,
 		          "Where the output goes.");
 
