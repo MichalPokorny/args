@@ -49,11 +49,6 @@
 // All functions and types of the library are within the args namespace.
 namespace args {
 
-// TODO: "ls -laxHrtlm"
-// Prints out help about all registered options to standard output.
-void Usage() {
-}
-
 // Parse gets a pointer to argc and argv as given to main(), parses out
 // options and modifies argc and argv to contain only nonoption arguments.
 // If option parsing fails, Parse prints out an error message describing
@@ -67,9 +62,20 @@ void Usage() {
 void Parse(int* argc, char*** argv) {
 }
 
-// TODO: Should this display help and quit on --help?
-// TODO: Is it OK to just say "flags OK" / "flags not OK"?
-bool TryParse(int argc, const char** argv) {
+// Prints out help about all registered flags to standard output.
+void ShowUsage() {
+}
+
+// Tries to parse a command line same as Parse(). Returns true on success.
+// Unlike Parse, errors are signalled by returning false instead of exitting.
+// If parsing wasn't successful, argc and argv are untouched.
+// NOTE: TryParse doesn't respond to "--help" and "-h".
+bool TryParse(int* argc, const char*** argv) {
+}
+
+// Returns the help string used by ShowUsage.
+// Useful for handling TryParse errors.
+std::string GetUsage() {
 }
 
 // This method returns vector of std::string representing standard command-line
@@ -183,9 +189,9 @@ internal::BoolFlag& AddBool(internal::BoolFlag*,
 
 // -- NOTES --
 //
-// Our initial idea was to also include 'operator T()' what would call .get().
-// Eventually, we decided against that, mostly because even with this
-// operator, flags would not be fully usable as their underlying types.
+// Our initial idea was to also include 'operator T()' equivalent to 'get()'.
+// We becided against that because even with 'operator T()', Flag<T> instances
+// wouldn't be fully usable as T instances.
 // For example, this wouldn't work due to C++ type inference rules:
 //     cout << my_string_flag << endl;
 // We would need to write:
@@ -193,11 +199,13 @@ internal::BoolFlag& AddBool(internal::BoolFlag*,
 // On the other hand, this would work:
 //     string my_flag_value = my_string_flag;
 //
-// We decided to remove the 'operator T()' to make the API more consistent
-// (always 'flag.get()'). Also, because 'get()' throws exceptions when
-// accessing nonpresent flags, 'operator T()' could throw exceptions as well.
-// 'string value = my_string_flag;', however, looks innocent.
-// 'string value = my_string_flag.get();' makes the possibility of failure
-// more explicit.
+// Removing 'operator T()' makes the API more consistent (always 'flag.get()').
+// Also, 'get()' throws exceptions when accessing nonpresent flags,
+// so 'operator T()' would throw exceptions, too.
+// 'string value = output_file.get();' makes this possibility more apparent
+// than 'string value = output_file;', which looks like plain assignment.
+//
+// Short boolean flags can be "squashed" -- the command line "ls -laHrt" is
+// equivalent to "ls -l -a -H -r -t".
 
 }  // namespace args
