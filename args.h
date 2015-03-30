@@ -50,7 +50,6 @@
 namespace args {
 
 // TODO: "ls -laxHrtlm"
-
 // Prints out help about all registered options to standard output.
 void Usage() {
 }
@@ -120,20 +119,20 @@ class EnumFlag : public StringFlag {};
 class IntFlag : public Flag<int> {
  public:
   int get() override {
-	return 0;
+    return 0;
   }
   bool present() override {
-	return false;
+    return false;
   }
 };
 
 class BoolFlag : public Flag<bool> {
  public:
   bool get() override {
-	return false;
+    return false;
   }
   bool present() override {
-	return false;
+    return false;
   }
 };
 
@@ -163,25 +162,24 @@ internal::StringFlag& AddString(internal::StringFlag*,
 
 internal::EnumFlag& AddEnum(internal::EnumFlag*,
                             const internal::FlagName& name, bool required,
-							const std::string& documentation,
-                            std::initializer_list<const char*> allowed_values
-		            ) {
+                            const std::string& documentation,
+                            std::initializer_list<const char*> allowed_values) {
   return *(new internal::EnumFlag);
 }
 
 // The 'minimum' and 'maximum' parameters can be used to set the allowed range.
 // The bounds are inclusive (minimum = 1, maximum = 3 allows {1, 2, 3}).
 internal::IntFlag& AddInt(internal::IntFlag*, const internal::FlagName& name,
-					      bool required, const std::string& documentation,
-						  int minimum = INT_MIN, int maximum = INT_MAX) {
+                          bool required, const std::string& documentation,
+                          int minimum = INT_MIN, int maximum = INT_MAX) {
 }
 
 internal::BoolFlag& AddBool(internal::BoolFlag*,
-							const internal::FlagName& name, bool required,
-							const std::string& documentation) {
+                            const internal::FlagName& name, bool required,
+                            const std::string& documentation) {
 }
 
-// -- NOTES -- 
+// -- NOTES --
 //
 // Our initial idea was to also include 'operator T()' what would call .get().
 // Eventually, we decided against that, mostly because even with this
