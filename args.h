@@ -65,12 +65,6 @@ void Usage() {
 // This method doesn't throw exceptions or indicate failure via a return value
 // to make the most common use case simpler (most programs don't need anything
 // but the default behavior).
-//
-// Intended usage:
-//   int main(int argc, char** argv) {
-//     flags::Parse(&argc, &argv);
-//     // argc, argv now only contain non-option arguments.
-//   }
 void Parse(int* argc, char*** argv) {
 }
 
@@ -79,11 +73,9 @@ void Parse(int* argc, char*** argv) {
 bool TryParse(int argc, const char** argv) {
 }
 
-// This method returns vector of std::string representing standart comand-line
-// arguments(arguments that are not represented as args framework specifies or
+// This method returns vector of std::string representing standard command-line
+// arguments (arguments that are not represented as args framework specifies or
 // are listed after "--" symbol).
-// 
-// If there are no such arguments returns empty vector
 const std::vector<std::string>& GetNonoption() {
   return *(new std::vector<std::string>);
 }
@@ -105,23 +97,6 @@ class Flag {
  public:
   virtual T get() = 0;
   virtual bool present() = 0;
-
-  // Our initial idea was to also include 'operator T()' what would call .get().
-  // Eventually, we decided against that, mostly because even with this
-  // operator, flags would not be fully usable as their underlying types.
-  // For example, this wouldn't work due to C++ type inference rules:
-  //     cout << my_string_flag << endl;
-  // We would need to write:
-  //     cout << my_string_flag.get() << endl;
-  // On the other hand, this would work:
-  //     string my_flag_value = my_string_flag;
-  //
-  // We decided to remove the 'operator T()' to make the API more consistent
-  // (always 'flag.get()'). Also, because 'get()' throws exceptions when
-  // accessing nonpresent flags, 'operator T()' could throw exceptions as well.
-  // 'string value = my_string_flag;', however, looks innocent.
-  // 'string value = my_string_flag.get();' makes the possibility of failure
-  // more explicit.
 };
 
 class StringFlag : public Flag<std::string> {
@@ -171,27 +146,13 @@ typedef internal::BoolFlag Bool;
 const bool REQUIRED = true;
 const bool OPTIONAL = false;
 
-// To create a new flag, call an Add* method like this:
-//    
-// first parameter	- args::String variable
-// name				- name of new flag
-// bool				- is flag required(true) or optional(false)
-// documentation	- string documentation of flag
-//
-// Returns new string flag
+// AddString, AddEnum, AddInt, AddBool create new flags.
+// See top of this file for examples.
 internal::StringFlag& AddString(internal::StringFlag*,
                                 const internal::FlagName& name,
                                 bool required,
                                 const std::string& documentation) {
   return *(new internal::StringFlag);
-}
-
-internal::EnumFlag& AddEnum(internal::EnumFlag*,
-                            const internal::FlagName& name, bool required, 
-							const std::string& documentation,
-                            const std::initializer_list<std::string>&
-                                allowed_values) {
-  return *(new internal::EnumFlag);
 }
 
 internal::EnumFlag& AddEnum(internal::EnumFlag*,
@@ -202,15 +163,35 @@ internal::EnumFlag& AddEnum(internal::EnumFlag*,
   return *(new internal::EnumFlag);
 }
 
+// The 'minimum' and 'maximum' parameters can be used to set the allowed range.
+// The bounds are inclusive (minimum = 1, maximum = 3 allows {1, 2, 3}).
 internal::IntFlag& AddInt(internal::IntFlag*, const internal::FlagName& name,
-							bool required, const std::string& documentation,
-							int lowerBound = INT_MIN,
-							int upperBound = INT_MAX) {
+					      bool required, const std::string& documentation,
+						  int minimum = INT_MIN, int maximum = INT_MAX) {
 }
 
 internal::BoolFlag& AddBool(internal::BoolFlag*,
 							const internal::FlagName& name, bool required,
 							const std::string& documentation) {
 }
+
+// -- NOTES -- 
+//
+// Our initial idea was to also include 'operator T()' what would call .get().
+// Eventually, we decided against that, mostly because even with this
+// operator, flags would not be fully usable as their underlying types.
+// For example, this wouldn't work due to C++ type inference rules:
+//     cout << my_string_flag << endl;
+// We would need to write:
+//     cout << my_string_flag.get() << endl;
+// On the other hand, this would work:
+//     string my_flag_value = my_string_flag;
+//
+// We decided to remove the 'operator T()' to make the API more consistent
+// (always 'flag.get()'). Also, because 'get()' throws exceptions when
+// accessing nonpresent flags, 'operator T()' could throw exceptions as well.
+// 'string value = my_string_flag;', however, looks innocent.
+// 'string value = my_string_flag.get();' makes the possibility of failure
+// more explicit.
 
 }  // namespace args
