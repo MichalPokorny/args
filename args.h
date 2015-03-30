@@ -13,14 +13,32 @@
 //
 // Use case:
 //     // Create variables to hold values of parsed flags.
-//     args::String output_file;
+//     args::String hostname;
 //     args::Enum protocol;
 //     args::Int timeout_ms;
 //     args::Bool verbose;
-//     // Bind our variables to new flags.
-//     args::AddString(&output_file, "output", args::REQUIRED,
-//                     "Path to the output file.");
-//     args::AddEnum(&protocol, "protocol", )
+//     
+//     int main(int argc, char** argv) {
+//       // Bind our variables to new flags.
+//       args::AddString(&hostname, "hostname", args::REQUIRED,
+//                       "Hostname of the synchronization server.");
+//       args::AddEnum(&protocol, {"protocol", 'p'}, args::REQUIRED,
+//                     "Synchronization protocol to use.",
+//                     {"http", "ftp", "https"});
+//       args::Int(&timeout_ms, 't', args::OPTIONAL,
+//                 "Connection timeout in ms. Default value is 1000.",
+//                 0, 60000);
+//       args::Bool(&verbose, {"verbose", 'v'}, args::OPTIONAL,
+//                  "Enable verbose logging?");
+//
+//       // Parse command line flags. Die on error.
+//       args::Parse(&argc, &argv);
+//
+//       ConnectWithTimeout(hostname.get(), protocol.get(),
+//                          timeout_ms.present() ? timeout_ms.get() : 1000);
+//       // ...
+//     }
+//
 // TODO: is it a "flag", or an "option"? unify nomenclature
 
 #include <climits>
@@ -105,8 +123,6 @@ class Flag {
   // 'string value = my_string_flag.get();' makes the possibility of failure
   // more explicit.
 };
-
-// TODO: BoolFlag, IntFlag
 
 class StringFlag : public Flag<std::string> {
  public:
