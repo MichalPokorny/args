@@ -104,13 +104,6 @@ class Flag {
   // 'string value = my_string_flag;', however, looks innocent.
   // 'string value = my_string_flag.get();' makes the possibility of failure
   // more explicit.
-
-  void alias(const FlagName& name) {
-  }
-  void alias(const std::initializer_list<FlagName>& names) {
-  }
-
-  // TODO: mozna explicitni set?
 };
 
 // TODO: BoolFlag, IntFlag
@@ -202,13 +195,6 @@ internal::IntFlag& AddInt(internal::IntFlag*, const internal::FlagName& name,
 internal::BoolFlag& AddBool(internal::BoolFlag*,
 							const internal::FlagName& name, bool required,
 							const std::string& documentation) {
-}
-
-void Alias(internal::StringFlag*, const internal::FlagName& name) {
-}
-
-void Alias(internal::StringFlag*,
-           const std::initializer_list<internal::FlagName>& names) {
 }
 
 }  // namespace args

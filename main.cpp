@@ -14,14 +14,10 @@ struct {
 } Options;
 
 int main(int argc, char** argv) {
-  args::AddString(&Options.output_file, "output", true,
-		  "Where the output goes.");
-  args::Alias(&Options.output_file, 'o');
-  args::Alias(&Options.output_file, "output_file");
-  args::Alias(&Options.output_file, {'f', "output_content_file"});
-  Options.output_file.alias({'x', 'y', "z", "foobar"});
+  args::AddString(&Options.output_file, {"output", 'o', "output_file"}, true,
+		          "Where the output goes.");
 
-  args::AddEnum(&Options.mode, {"mode", 'm', "xyzzy", 'x'}, args::OPTIONAL,
+  args::AddEnum(&Options.mode, {"mode", 'm'}, args::OPTIONAL,
                 "An awesome flag.", {"x", "y", "z"});
 
   args::AddInt(&Options.print_lines, "print", args::OPTIONAL,
