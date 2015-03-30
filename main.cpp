@@ -21,11 +21,11 @@ int main(int argc, char** argv) {
   args::Alias(&Options.output_file, {'f', "output_content_file"});
   Options.output_file.alias({'x', 'y', "z", "foobar"});
 
-  args::AddEnum(&Options.mode, "mode", args::OPTIONAL,
-                {"hello", "world", "foobar"}, "An awesome flag.");
+  args::AddEnum(&Options.mode, {"mode", 'm', "xyzzy", 'x'}, args::OPTIONAL,
+                "An awesome flag.", {"x", "y", "z"});
 
-  args::AddInt(&Options.print_lines, "print", args::OPTIONAL, 10, 50,
-		  "Some number flag.");
+  args::AddInt(&Options.print_lines, "print", args::OPTIONAL,
+               "Some number flag.", 10, 35);
 
   args::AddBool(&Options.verbose, 'v', args::OPTIONAL, "Is verbose mode on?");
 

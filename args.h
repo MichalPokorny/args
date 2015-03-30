@@ -23,9 +23,10 @@
 //     args::AddEnum(&protocol, "protocol", )
 // TODO: is it a "flag", or an "option"? unify nomenclature
 
+#include <climits>
 #include <string>
-#include <vector>
 #include <utility>
+#include <vector>
 
 // All functions and types of the library are within the args namespace.
 namespace args {
