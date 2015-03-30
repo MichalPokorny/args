@@ -172,11 +172,13 @@ internal::EnumFlag& AddEnum(internal::EnumFlag*,
 internal::IntFlag& AddInt(internal::IntFlag*, const internal::FlagName& name,
                           bool required, const std::string& documentation,
                           int minimum = INT_MIN, int maximum = INT_MAX) {
+  return *(new internal::IntFlag);
 }
 
 internal::BoolFlag& AddBool(internal::BoolFlag*,
                             const internal::FlagName& name, bool required,
                             const std::string& documentation) {
+  return *(new internal::BoolFlag);
 }
 
 // -- NOTES --
