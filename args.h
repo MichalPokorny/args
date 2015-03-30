@@ -6,11 +6,6 @@
 // The user only needs to register options via AddBool/Int/String/Enum and call
 // Parse in main().
 //
-// Strictly speaking, the assignment asked to implement "options that aren't
-// allowed to have a value". This makes sense with booleans, but since it would
-// be impossible to pass a non-bool option without a value, this makes no
-// sense for non-bools. Thus we decided to skip this part of the assignment.
-//
 // Use case:
 //     // Create variables to hold values of parsed flags.
 //     args::String hostname;
@@ -247,5 +242,11 @@ void AddBool(internal::BoolFlag* flag, const internal::FlagName& name,
 //
 // The '(void) something;' construct used in empty functions is used to
 // squash "unused argument" warnings.
+//
+// Strictly speaking, the assignment asked to implement "options that aren't
+// allowed to have a value". This makes sense with booleans, but since it would
+// be impossible to pass a non-bool option without a value, this makes no
+// sense for non-bools. Thus we decided to skip this part of the assignment
+// and to only allow required and optional flags.
 
 }  // namespace args
