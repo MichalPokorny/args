@@ -17,7 +17,7 @@
 //     args::Enum protocol;
 //     args::Int timeout_ms;
 //     args::Bool verbose;
-//     
+//
 //     int main(int argc, char** argv) {
 //       // Bind our variables to new flags.
 //       args::AddString(&hostname, "hostname", args::REQUIRED,
@@ -33,6 +33,12 @@
 //
 //       // Parse command line flags. Die on error.
 //       args::Parse(&argc, &argv);
+//
+//       // argc, argv now point to the original zeroth argument
+//       // (usually the program name) and nonoption arguments.
+//       vector<char*> synchronized_paths(argc);
+//       copy(&argv[1], &argv[argc], synchronized_paths.begin());  // skip [0]
+//       SetSynchronizedFiles(synchronized_paths);
 //
 //       ConnectWithTimeout(hostname.get(), protocol.get(),
 //                          timeout_ms.present() ? timeout_ms.get() : 1000);
@@ -83,13 +89,6 @@ bool TryParse(int* argc, const char*** argv) {
 // Useful for handling TryParse errors.
 std::string GetUsage() {
   return "";
-}
-
-// This method returns vector of std::string representing standard command-line
-// arguments (arguments that are not represented as args framework specifies or
-// are listed after "--" symbol).
-const std::vector<std::string>& GetNonoption() {
-  return *(new std::vector<std::string>);
 }
 
 // The args::internal namespace contains implementation details that need
