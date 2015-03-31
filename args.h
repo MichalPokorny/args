@@ -3,7 +3,7 @@
 // Pavel Pilař, Michael Pokorný
 //
 // The API is deliberately designed to be very simple for the user.
-// The user only needs to register options via AddBool/Int/String/Enum and call
+// The user only needs to register flags via AddBool/Int/String/Enum and call
 // Parse in main().
 //
 // Use case:
@@ -30,7 +30,7 @@
 //       args::Parse(&argc, &argv);
 //
 //       // argc, argv now point to the original zeroth argument
-//       // (usually the program name) and nonoption arguments.
+//       // (usually the program name) and nonflags arguments.
 //       vector<char*> synchronized_paths(argc);
 //       copy(&argv[1], &argv[argc], synchronized_paths.begin());  // skip [0]
 //       SetSynchronizedFiles(synchronized_paths);
@@ -39,8 +39,6 @@
 //                          timeout_ms.present() ? timeout_ms.get() : 1000);
 //       // ...
 //     }
-//
-// TODO: is it a "flag", or an "option"? unify nomenclature
 
 #include <climits>
 #include <exception>
@@ -52,11 +50,11 @@
 namespace args {
 
 // Parse gets a pointer to argc and argv as given to main(), parses out
-// options and modifies argc and argv to contain only nonoption arguments.
-// If option parsing fails, Parse prints out an error message describing
+// flags and modifies argc and argv to contain only nonflag arguments.
+// If flag parsing fails, Parse prints out an error message describing
 // the problem and exits with exit code 1.
-// If no long option named "--help" or short option named "-h" is registered,
-// passing either of these options calls Usage and exits with exit code 0.
+// If no long flag named "--help" or short flag named "-h" is registered,
+// passing either of these flags calls Usage and exits with exit code 0.
 //
 // This method doesn't throw exceptions or indicate failure via a return value
 // to make the most common use case simpler (most programs don't need anything
@@ -243,9 +241,9 @@ void AddBool(internal::BoolFlag* flag, const internal::FlagName& name,
 // The '(void) something;' construct used in empty functions is used to
 // squash "unused argument" warnings.
 //
-// Strictly speaking, the assignment asked to implement "options that aren't
+// Strictly speaking, the assignment asked to implement "flags that aren't
 // allowed to have a value". This makes sense with booleans, but since it would
-// be impossible to pass a non-bool option without a value, this makes no
+// be impossible to pass a non-bool flag without a value, this makes no
 // sense for non-bools. Thus we decided to skip this part of the assignment
 // and to only allow required and optional flags.
 
