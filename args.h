@@ -20,10 +20,10 @@
 //       args::AddEnum(&protocol, {"protocol", 'p'}, args::REQUIRED,
 //                     "Synchronization protocol to use.",
 //                     {"http", "ftp", "https"});
-//       args::Int(&timeout_ms, 't', args::OPTIONAL,
+//       args::AddInt(&timeout_ms, 't', args::OPTIONAL,
 //                 "Connection timeout in ms. Default value is 1000.",
 //                 0, 60000);
-//       args::Bool(&verbose, {"verbose", 'v'}, args::OPTIONAL,
+//       args::AddBool(&verbose, {"verbose", 'v'}, args::OPTIONAL,
 //                  "Enable verbose logging?");
 //
 //       // Parse command line flags. Die on error.
@@ -31,7 +31,7 @@
 //
 //       // argc, argv now point to the original zeroth argument
 //       // (usually the program name) and nonflags arguments.
-//       vector<char*> synchronized_paths(argc);
+//       std::vector<char*> synchronized_paths(argc);
 //       copy(&argv[1], &argv[argc], synchronized_paths.begin());  // skip [0]
 //       SetSynchronizedFiles(synchronized_paths);
 //

@@ -6,33 +6,41 @@ using std::cout;
 using std::endl;
 using std::string;
 
-struct {
-  args::String output_file;
-  args::Enum mode;
-  args::Int print_lines;
-  args::Bool verbose;
-} Options;
+// These are empty methods for use case to be able to build and run.
+void ConnectWithTimeout(const std::string& hostname, const std::string& protocol, int timeout_ms){}
+void SetSynchronizedFiles(const std::vector<char*>& synchronized_paths){}
 
-int main(int argc, char** argv) {
-  (void) argc;
-  (void) argv;
-  args::AddString(&Options.output_file, {"output", 'o', "output_file"}, true,
-                  "Where the output goes.");
+// Create variables to hold values of parsed flags.
+args::String hostname;
+args::Enum protocol;
+args::Int timeout_ms;
+args::Bool verbose;
 
-  args::AddEnum(&Options.mode, {"mode", 'm'}, args::OPTIONAL,
-                "An awesome flag.", {"x", "y", "z"});
+int main(int argc, char** argv) { 
+  // Bind our variables to new flags.
+  args::AddString(&hostname, "hostname", args::REQUIRED,
+                  "Hostname of the synchronization server.");
+  args::AddEnum(&protocol, {"protocol", 'p'}, args::REQUIRED,
+                "Synchronization protocol to use.",
+                {"http", "ftp", "https"});
+  args::AddInt(&timeout_ms, 't', args::OPTIONAL,
+               "Connection timeout in ms. Default value is 1000.",
+               0, 60000);
+  args::AddBool(&verbose, {"verbose", 'v'}, args::OPTIONAL,
+                "Enable verbose logging?");
 
-  args::AddInt(&Options.print_lines, "print", args::OPTIONAL,
-               "Some number flag.", 10, 35);
-
-  args::AddBool(&Options.verbose, 'v', args::OPTIONAL, "Is verbose mode on?");
-
+  // Parse command line flags. Die on error.
   args::Parse(&argc, &argv);
 
-  if (Options.output_file.present()) {
-    cout << Options.output_file.get() << endl;
-  }
+  // argc, argv now point to the original zeroth argument
+  // (usually the program name) and nonflags arguments.
+  std::vector<char*> synchronized_paths(argc);
+  copy(&argv[1], &argv[argc], synchronized_paths.begin());  // skip [0]
+  SetSynchronizedFiles(synchronized_paths);
 
-  cout << "it compiles" << endl;
+  ConnectWithTimeout(hostname.get(), protocol.get(),
+                    timeout_ms.present() ? timeout_ms.get() : 1000);
+  // ...
+
   return 0;
 }
