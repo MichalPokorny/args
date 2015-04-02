@@ -120,10 +120,10 @@ class Flag {
  public:
   // Returns the value given to this flag, if the flag was specified.
   // If the flag wasn't specified, throws FlagNotPassed.
-  // Throws CommandLineNotParser if Parse or TryParse wasn't called yet.
+  // Throws CommandLineNotParsed if Parse or TryParse wasn't called yet.
   virtual T get() = 0;
   // Returns whether this flag was given a value on the command-line.
-  // Throws CommandLineNotParser if Parse or TryParse wasn't called yet.
+  // Throws CommandLineNotParsed if Parse or TryParse wasn't called yet.
   virtual bool present() = 0;
 };
 

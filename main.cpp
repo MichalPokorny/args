@@ -7,14 +7,15 @@ using std::endl;
 using std::string;
 
 // These are empty methods for use case to be able to build and run.
-void ConnectWithTimeout(const std::string& hostname, const std::string& protocol, int timeout_ms){
-  (void)hostname;
-  (void)protocol;
-  (void)timeout_ms;
+void ConnectWithTimeout(const std::string& hostname,
+                        const std::string& protocol, int timeout_ms) {
+  (void) hostname;
+  (void) protocol;
+  (void) timeout_ms;
 }
 
-void SetSynchronizedFiles(const std::vector<char*>& synchronized_paths){
-  (void)synchronized_paths;
+void SetSynchronizedFiles(const std::vector<char*>& synchronized_paths) {
+  (void) synchronized_paths;
 }
 
 // Create variables to hold values of parsed flags.
@@ -23,7 +24,7 @@ args::Enum protocol;
 args::Int timeout_ms;
 args::Bool verbose;
 
-int main(int argc, char** argv) { 
+int main(int argc, char** argv) {
   // Bind our variables to new flags.
   args::AddString(&hostname, "hostname", args::REQUIRED,
                   "Hostname of the synchronization server.");
@@ -46,7 +47,7 @@ int main(int argc, char** argv) {
   SetSynchronizedFiles(synchronized_paths);
 
   ConnectWithTimeout(hostname.get(), protocol.get(),
-                    timeout_ms.present() ? timeout_ms.get() : 1000);
+                     timeout_ms.present() ? timeout_ms.get() : 1000);
   // ...
 
   return 0;
