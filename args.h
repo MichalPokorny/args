@@ -6,8 +6,10 @@
 // The user only needs to register flags via AddBool/Int/String/Enum and call
 // Parse in main().
 //
-// Use case:
+// Use case (see main.cpp):
 //     // Create variables to hold values of parsed flags.
+//     // Consider wrapping those in 'struct { ... } flags;' to cleanly
+//     // separate them from usual variables.
 //     args::String hostname;
 //     args::Enum protocol;
 //     args::Int timeout_ms;

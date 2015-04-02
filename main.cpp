@@ -19,6 +19,8 @@ void SetSynchronizedFiles(const std::vector<char*>& synchronized_paths) {
 }
 
 // Create variables to hold values of parsed flags.
+// Consider wrapping those in 'struct { ... } flags;' to cleanly
+// separate them from usual variables.
 args::String hostname;
 args::Enum protocol;
 args::Int timeout_ms;
