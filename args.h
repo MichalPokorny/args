@@ -23,8 +23,8 @@
 //                     "Synchronization protocol to use.",
 //                     {"http", "ftp", "https"});
 //       args::AddInt(&timeout_ms, 't', args::OPTIONAL,
-//                 "Connection timeout in ms. Default value is 1000.",
-//                 0, 60000);
+//                    "Connection timeout in ms. Default value is 1000.",
+//                    0, 60000);
 //       args::AddBool(&verbose, {"verbose", 'v'}, args::OPTIONAL,
 //                  "Enable verbose logging?");
 //
