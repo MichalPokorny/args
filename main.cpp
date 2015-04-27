@@ -6,51 +6,46 @@ using std::cout;
 using std::endl;
 using std::string;
 
-// These are empty methods for use case to be able to build and run.
-void ConnectWithTimeout(const std::string& hostname,
-                        const std::string& protocol, int timeout_ms) {
-  (void) hostname;
-  (void) protocol;
-  (void) timeout_ms;
-}
-
-void SetSynchronizedFiles(const std::vector<char*>& synchronized_paths) {
-  (void) synchronized_paths;
-}
-
 // Create variables to hold values of parsed flags.
 // Consider wrapping those in 'struct { ... } flags;' to cleanly
 // separate them from usual variables.
-args::String hostname;
-args::Enum protocol;
-args::Int timeout_ms;
+args::Int size;
 args::Bool verbose;
 
 int main(int argc, char** argv) {
   // Bind our variables to new flags.
-  args::AddString(&hostname, "hostname", args::REQUIRED,
-                  "Hostname of the synchronization server.");
-  args::AddEnum(&protocol, {"protocol", 'p'}, args::REQUIRED,
-                "Synchronization protocol to use.",
-                {"http", "ftp", "https"});
-  args::AddInt(&timeout_ms, 't', args::OPTIONAL,
-               "Connection timeout in ms. Default value is 1000.",
-               0, 60000);
-  args::AddBool(&verbose, {"verbose", 'v'}, args::OPTIONAL,
-                "Enable verbose logging?");
+  args::AddBool(&verbose, {'v', "verbose"}, args::OPTIONAL,
+                "Enable verbose logging");
+
+  args::AddInt(&size, {'s', "size"}, args::OPTIONAL,
+               "Size of something");
 
   // Parse command line flags. Die on error.
   args::Parse(&argc, &argv);
+  
+  if (verbose.present()){
+    printf("verbose = true");
+  } else {
+    printf("verbose = false");
+  }
 
+  if (size.present()){
+    printf("size = %i", size.get());
+  } else {
+    printf("size = 42");
+  }
+  
   // argc, argv now point to the original zeroth argument
   // (usually the program name) and nonflags arguments.
-  std::vector<char*> synchronized_paths(argc);
-  copy(&argv[1], &argv[argc], synchronized_paths.begin());  // skip [0]
-  SetSynchronizedFiles(synchronized_paths);
+  std::vector<char*> non_flags(argc);
+  copy(&argv[1], &argv[argc], non_flags.begin()); //skip 0
 
-  ConnectWithTimeout(hostname.get(), protocol.get(),
-                     timeout_ms.present() ? timeout_ms.get() : 1000);
-  // ...
+  //print non flags arguments
+  cout << "args =";
+  for (auto non_flag : non_flags){
+    cout << non_flag << " ";
+  }
+  cout << endl;
 
   return 0;
 }
