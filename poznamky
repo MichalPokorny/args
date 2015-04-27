@@ -1,0 +1,30 @@
+- Google style guide
+- documentation => usage
+- vyjimky: obecne API jen "jaky option to je, jaky je error string"
+- --x --x=true --x=false -> pridat docs k AddBool
+- nutit dokumentaci, dokumentovat design decision ze nutime dokumentaci
+- nebudeme poskytovat kontejner
+- nebudeme mit buildery
+- predelat 'bool' na 'enum'
+
+- testy: pres Google test
+	death test, integracni test pres priklad co mame udelat
+
+- command line, specifikace optionu,  => 
+
+class OptionParser<fsdf> {
+	public:
+		NastavOption(string, OptionValue<fdasdf>&) // set value or throw exception
+}
+
+NastavOption("true", fdashd) => asdfjhas.SetValue(true)
+
+void Parse(const string& command_line, vector<pair<OptionSpec, OptionValue&>>) ==> throw exception on problems
+
+	--fskldhfasd 1243
+	--sdhfasdhfa=1234
+		==> NastavOption("sdhfka", "124312")
+
+	--sdfsd --fdasd -> nejednoznacnost. jde-li to druhe naparsovat jako option, tak to naparsujeme jako option.
+
+
