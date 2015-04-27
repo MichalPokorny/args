@@ -1,3 +1,6 @@
+#ifndef ARGS_ARGS_H_INCLUDED
+#define ARGS_ARGS_H_INCLUDED
+
 // Command-line argument parsing library
 //
 // Pavel Pilař, Michael Pokorný
@@ -250,3 +253,5 @@ void AddBool(internal::BoolFlag* flag, const internal::FlagName& name,
 // and to only allow required and optional flags.
 
 }  // namespace args
+
+#endif
