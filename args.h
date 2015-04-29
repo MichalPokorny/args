@@ -73,15 +73,31 @@ void Parse(int* argc, char*** argv) {
 void ShowUsage() {
 }
 
-// Tries to parse a command line same as Parse(). Returns true on success.
-// Unlike Parse, errors are signalled by returning false instead of exitting.
-// If parsing wasn't successful, argc and argv are untouched.
+// Tries to parse a command line same as Parse().
+// Unlike Parse, errors are signalled by throwing args::ParseError instead
+// of exitting. If parsing wasn't successful, argc and argv are untouched.
 // NOTE: TryParse doesn't respond to "--help" and "-h".
-bool TryParse(int* argc, const char*** argv) {
+void TryParse(int* argc, const char*** argv) {
   (void) argc;
   (void) argv;
   return false;
 }
+
+// Exception thrown by TryParse on errors.
+// Derived classes may give more semantic information about the error.
+class ParseError : public std::exception {
+ public:
+  virtual ~ParseError();
+
+  const char* what() override;
+
+  // Returns a human-readable description of the parse error.
+  const char* Description() const;
+
+  // If this error occurred while parsing a flag, returns
+  // a pointer to the flag. Returns NULL otherwise.
+  Flag* FailedFlag() const;
+};
 
 // Returns the help string used by ShowUsage.
 // Useful for handling TryParse errors.
