@@ -73,15 +73,31 @@ void Parse(int* argc, char*** argv) {
 void ShowUsage() {
 }
 
-// Tries to parse a command line same as Parse(). Returns true on success.
-// Unlike Parse, errors are signalled by returning false instead of exitting.
-// If parsing wasn't successful, argc and argv are untouched.
+// Tries to parse a command line same as Parse().
+// Unlike Parse, errors are signalled by throwing args::ParseError instead
+// of exitting. If parsing wasn't successful, argc and argv are untouched.
 // NOTE: TryParse doesn't respond to "--help" and "-h".
-bool TryParse(int* argc, const char*** argv) {
+void TryParse(int* argc, const char*** argv) {
   (void) argc;
   (void) argv;
   return false;
 }
+
+// Exception thrown by TryParse on errors.
+// Derived classes may give more semantic information about the error.
+class ParseError : public std::exception {
+ public:
+  virtual ~ParseError();
+
+  const char* what() override;
+
+  // Returns a human-readable description of the parse error.
+  const char* Description() const;
+
+  // If this error occurred while parsing a flag, returns
+  // a pointer to the flag. Returns NULL otherwise.
+  Flag* FailedFlag() const;
+};
 
 // Returns the help string used by ShowUsage.
 // Useful for handling TryParse errors.
@@ -181,42 +197,42 @@ enum FlagUse { REQUIRED, OPTIONAL };
 // AddString, AddEnum, AddInt, AddBool create new flags.
 // See top of this file for examples.
 void AddString(internal::StringFlag* flag, const internal::FlagName& name,
-               FlagUse use, const std::string& documentation) {
+               FlagUse use, const std::string& usage) {
   (void) flag;
   (void) name;
   (void) use;
-  (void) documentation;
+  (void) usage;
 }
 
 void AddEnum(internal::EnumFlag* flag, const internal::FlagName& name,
-             FlagUse use, const std::string& documentation,
+             FlagUse use, const std::string& usage,
              std::initializer_list<const char*> allowed_values) {
   (void) flag;
   (void) name;
   (void) use;
-  (void) documentation;
+  (void) usage;
   (void) allowed_values;
 }
 
 // The 'minimum' and 'maximum' parameters can be used to set the allowed range.
 // The bounds are inclusive (minimum = 1, maximum = 3 allows {1, 2, 3}).
 void AddInt(internal::IntFlag* flag, const internal::FlagName& name,
-            FlagUse use, const std::string& documentation,
+            FlagUse use, const std::string& usage,
             int minimum = INT_MIN, int maximum = INT_MAX) {
   (void) flag;
   (void) name;
   (void) use;
-  (void) documentation;
+  (void) usage;
   (void) minimum;
   (void) maximum;
 }
 
 void AddBool(internal::BoolFlag* flag, const internal::FlagName& name,
-             FlagUse use, const std::string& documentation) {
+             FlagUse use, const std::string& usage) {
   (void) flag;
   (void) name;
   (void) use;
-  (void) documentation;
+  (void) usage;
 }
 
 // -- NOTES --
