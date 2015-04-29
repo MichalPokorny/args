@@ -44,6 +44,26 @@
 //                          timeout_ms.present() ? timeout_ms.get() : 1000);
 //       // ...
 //     }
+//
+// A flag is a variable that can have a value assigned by passing certain
+// arguments on the command line. Every flag has at least one name. Names
+// must be unique.
+// Names may be short or long.
+// Short names are one character long. The only allowed characters are ASCII
+// alphanumerics. Long names must be at least one character long, and
+// characters allowed in long names are ASCII alphanumerics, underscores (_)
+// and dashes (-). Long names must be distinct from any short names.
+// Flags values can be assigned as follows:
+//   * --flag_name=value / -f=value
+//   * --flag_name="a long value with spaces" / -f="a long value with spaces"
+//   * --flag_name / -f  (Boolean flags only; sets the flag to true)
+// Flags may be assigned at most one value.
+// A space may be used instead of the equals sign.
+// A flag that has an assigned value is called 'present'.
+//
+// The command line is passed to the library as a pointer to the argc and argv
+// arguments of main().
+// TODO: What happens if there's a space within an argc component?
 
 #include <climits>
 #include <exception>
@@ -134,6 +154,9 @@ class CommandLineNotParsed : public std::exception {};
 // Thrown if the user tries to read the value of an optional flag
 // that wasn't passed on the command line.
 class FlagNotPassed : public std::exception {};
+// Thrown if flag registration methods were called badly, for example
+// if a name is repeated.
+class FlagSpecificationError : public std::exception {};
 
 // Subclasses of Flag<T> represent flags of various types.
 template<typename T>
