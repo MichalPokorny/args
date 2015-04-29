@@ -176,25 +176,24 @@ typedef internal::IntFlag Int;
 typedef internal::BoolFlag Bool;
 
 // Denotes whether a flag is required or optional.
-// TODO: Very awkward name.
-enum Requiredness { REQUIRED, OPTIONAL };
+enum FlagUse { REQUIRED, OPTIONAL };
 
 // AddString, AddEnum, AddInt, AddBool create new flags.
 // See top of this file for examples.
 void AddString(internal::StringFlag* flag, const internal::FlagName& name,
-               Requiredness requiredness, const std::string& documentation) {
+               FlagUse use, const std::string& documentation) {
   (void) flag;
   (void) name;
-  (void) requiredness;
+  (void) use;
   (void) documentation;
 }
 
 void AddEnum(internal::EnumFlag* flag, const internal::FlagName& name,
-             Requiredness requiredness, const std::string& documentation,
+             FlagUse use, const std::string& documentation,
              std::initializer_list<const char*> allowed_values) {
   (void) flag;
   (void) name;
-  (void) requiredness;
+  (void) use;
   (void) documentation;
   (void) allowed_values;
 }
@@ -202,21 +201,21 @@ void AddEnum(internal::EnumFlag* flag, const internal::FlagName& name,
 // The 'minimum' and 'maximum' parameters can be used to set the allowed range.
 // The bounds are inclusive (minimum = 1, maximum = 3 allows {1, 2, 3}).
 void AddInt(internal::IntFlag* flag, const internal::FlagName& name,
-            Requiredness requiredness, const std::string& documentation,
+            FlagUse use, const std::string& documentation,
             int minimum = INT_MIN, int maximum = INT_MAX) {
   (void) flag;
   (void) name;
-  (void) requiredness;
+  (void) use;
   (void) documentation;
   (void) minimum;
   (void) maximum;
 }
 
 void AddBool(internal::BoolFlag* flag, const internal::FlagName& name,
-             Requiredness requiredness, const std::string& documentation) {
+             FlagUse use, const std::string& documentation) {
   (void) flag;
   (void) name;
-  (void) requiredness;
+  (void) use;
   (void) documentation;
 }
 
