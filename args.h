@@ -184,42 +184,42 @@ const bool OPTIONAL = false;
 // AddString, AddEnum, AddInt, AddBool create new flags.
 // See top of this file for examples.
 void AddString(internal::StringFlag* flag, const internal::FlagName& name,
-               bool required, const std::string& documentation) {
+               bool required, const std::string& usage) {
   (void) flag;
   (void) name;
   (void) required;
-  (void) documentation;
+  (void) usage;
 }
 
 void AddEnum(internal::EnumFlag* flag, const internal::FlagName& name,
-             bool required, const std::string& documentation,
+             bool required, const std::string& usage,
              std::initializer_list<const char*> allowed_values) {
   (void) flag;
   (void) name;
   (void) required;
-  (void) documentation;
+  (void) usage;
   (void) allowed_values;
 }
 
 // The 'minimum' and 'maximum' parameters can be used to set the allowed range.
 // The bounds are inclusive (minimum = 1, maximum = 3 allows {1, 2, 3}).
 void AddInt(internal::IntFlag* flag, const internal::FlagName& name,
-            bool required, const std::string& documentation,
+            bool required, const std::string& usage,
             int minimum = INT_MIN, int maximum = INT_MAX) {
   (void) flag;
   (void) name;
   (void) required;
-  (void) documentation;
+  (void) usage;
   (void) minimum;
   (void) maximum;
 }
 
 void AddBool(internal::BoolFlag* flag, const internal::FlagName& name,
-             bool required, const std::string& documentation) {
+             bool required, const std::string& usage) {
   (void) flag;
   (void) name;
   (void) required;
-  (void) documentation;
+  (void) usage;
 }
 
 // -- NOTES --
