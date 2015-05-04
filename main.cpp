@@ -14,9 +14,9 @@ args::Bool verbose;
 
 int main(int argc, char** argv) {
   // Bind our variables to new flags.
-  args::AddBool(&verbose, {'v', "verbose"}, args::FlagUse::OPTIONAL,
+  args::AddBool(&verbose, {'v', "verbose"}, args::OPTIONAL,
                 "Enable verbose logging");
-  args::AddInt(&size, {'s', "size"}, args::FlagUse::REQUIRED,
+  args::AddInt(&size, {'s', "size"}, args::REQUIRED,
                "Size of something");
 
   // Parse command line flags. Die on error.
