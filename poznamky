@@ -1,11 +1,5 @@
-- Google style guide
-- documentation => usage
 - vyjimky: obecne API jen "jaky option to je, jaky je error string"
 - --x --x=true --x=false -> pridat docs k AddBool
-- nutit dokumentaci, dokumentovat design decision ze nutime dokumentaci
-- nebudeme poskytovat kontejner
-- nebudeme mit buildery
-- predelat 'bool' na 'enum'
 
 - testy: pres Google test
 	death test, integracni test pres priklad co mame udelat

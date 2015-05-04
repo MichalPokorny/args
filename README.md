@@ -17,6 +17,7 @@ Assignment for NPRG043 Recommended Programming Practices on Charles University.
    string. We decided not to follow this advice -- our design forces users
    to document flags or to be annoyed by gross empty strings everywhere:
    `AddBool(&verbose, "verbose", args::REQUIRED, "")`.
+   This is entirely intentional -- we want our users to document their flags.
  * The same reviewer also  suggests adding a "flag container"
    (something like `GetFlagValue<bool>("verbose")`). We decided not to:
    * A generic "flag container" would allow writing less DRY code with
