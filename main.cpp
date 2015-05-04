@@ -39,14 +39,16 @@ int main(int argc, char** argv) {
   // argc, argv now point to the original zeroth argument
   // (usually the program name) and nonflags arguments.
   std::vector<char*> non_flags(argc);
-  copy(&argv[1], &argv[argc], non_flags.begin()); // skip [0]
+  if (argc > 1) {
+    copy(&argv[1], &argv[argc], non_flags.begin()); // skip [0]
 
-  // Print non flags arguments.
-  std::cout << "args =";
-  for (const auto& non_flag : non_flags) {
-    std::cout << non_flag << " ";
+    // Print non flags arguments.
+    std::cout << "args =";
+    for (const auto& non_flag : non_flags) {
+      std::cout << non_flag << " ";
+    }
+    std::cout << std::endl;
   }
-  std::cout << std::endl;
 
   return 0;
 }
