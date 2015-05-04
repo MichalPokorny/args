@@ -80,8 +80,10 @@ void ShowUsage() {
 void TryParse(int* argc, const char*** argv) {
   (void) argc;
   (void) argv;
-  return false;
 }
+
+// See below for definition of AbstractFlag.
+class AbstractFlag;
 
 // Exception thrown by TryParse on errors.
 // Derived classes may give more semantic information about the error.
@@ -89,14 +91,14 @@ class ParseError : public std::exception {
  public:
   virtual ~ParseError();
 
-  const char* what() override;
+  const char* what() const noexcept override;
 
   // Returns a human-readable description of the parse error.
   const char* Description() const;
 
   // If this error occurred while parsing a flag, returns
   // a pointer to the flag. Returns NULL otherwise.
-  Flag* FailedFlag() const;
+  AbstractFlag* FailedFlag() const;
 };
 
 // Returns the help string used by ShowUsage.
@@ -136,16 +138,21 @@ class CommandLineNotParsed : public std::exception {};
 class FlagNotPassed : public std::exception {};
 
 // Subclasses of Flag<T> represent flags of various types.
+// All flags derive from the AbstractFlag class.
+class AbstractFlag {
+ public:
+  // Returns whether this flag was given a value on the command-line.
+  // Throws CommandLineNotParsed if Parse or TryParse wasn't called yet.
+  virtual bool present() = 0;
+};
+
 template<typename T>
-class Flag {
+class Flag : public AbstractFlag {
  public:
   // Returns the value given to this flag, if the flag was specified.
   // If the flag wasn't specified, throws FlagNotPassed.
   // Throws CommandLineNotParsed if Parse or TryParse wasn't called yet.
   virtual T get() = 0;
-  // Returns whether this flag was given a value on the command-line.
-  // Throws CommandLineNotParsed if Parse or TryParse wasn't called yet.
-  virtual bool present() = 0;
 };
 
 class StringFlag : public Flag<std::string> {
